@@ -4,13 +4,13 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/jdtrat/tokencodr/workflows/R-CMD-check/badge.svg)](https://github.com/jdtrat/tokencodr/actions)
+<!-- [![R-CMD-check](https://github.com/jdtrat/tokencodr/workflows/R-CMD-check/badge.svg)](https://github.com/jdtrat/tokencodr/actions) -->
 
 <!-- badges: end -->
 
 ------------------------------------------------------------------------
 
-<img src="https://jdtrat.com/project/tokencodr/featured-hex.png" width="328" height="378" align="right"/>
+<!-- <img src="https://jdtrat.com/project/tokencodr/featured-hex.png" width="328" height="378" align="right"/> -->
 
 tokencodr provides functions to easily encrypt authentication files for both interactive and non-interactive usage using the [sodium package](https://github.com/jeroen/sodium).
 It was inspired by [gargle](https://gargle.r-lib.org), and much of the code is directly adapted from the `secret_*` family of functions used by gargle internally. The methods employed follow this [vignette on securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html).
