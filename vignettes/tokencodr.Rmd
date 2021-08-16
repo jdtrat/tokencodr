@@ -1,0 +1,60 @@
+---
+title: "Learn tokencodr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Learn tokencodr }
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Overview
+
+This package was inspired by [gargle](https://gargle.r-lib.org). Indeed, much of the code in this package is adapted directly from the `secret_*` family of functions used by gargle internally. The methods employed here are directly adapted from this [vignette on securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html). I hope `tokencodr` will make it easy for people to encrypt authentication tokens for both interactive and non-interactive usage. 
+
+> **DISCLAIMER:** I am not a security expert. The methods described in this package could potentially allow certain parties to access your authorization token(s) and, subsequently, your data. Use at your own risk.
+
+As an overview, I will describe how to use this package in-tandem with [boxr](https://r-box.github.io/boxr/index.html), a 'lightweight, *opinionated*, high-level R interface to the box.com API.'
+
+The first step would be to create an environmental variable using the `create_env_pw()` function. This accepts a 'service' argument, which would typically be a one-word description for the platform whose token you are attempting to encrypt. 
+
+In this case, we are looking to encrypt a Box.com token, so I will call `create_env_pw("BOXR")`. This will generate an environmental variable that can be added to the '.Renviron'. file for safe-keeping.
+
+Tokens, like those used in arcade games, can be thought of as a coin. One side stores a username and the other a password. Multiple tokens, with different permissions, can provide access to a given account. They can be easily shared (e.g. as a JSON file) and allow access to applications, such as Google Drive, without requiring a person manually login.
+
+Following the [boxr](https://r-box.github.io/boxr/articles/boxr-app-service.html) documentation, I can generate a JSON web token (JWT), which contains login credentials for a service application -- an app that acts on behalf of the system itself, often with limited scopes. 
+
+To encrypt this, I would simply call `encrypt_token()`. This function accepts the service ("BOXR" in our case), an input file, and the destination directory for where the file should be stored. 
+
+In our case, I may call the following:
+
+```{r, eval = FALSE}
+encrypt_token(service = "BOXR", 
+              input = "~/private/local/path/to/my/jwt/file.json", 
+              destination = "~/Desktop/")
+```
+
+If it does not already exist, this will create a ".secret" folder on the Desktop, which is -- on Macs -- a hidden directory. Within that folder, there will be an encrypted file with the name "BOXR" and no extension. Congratulations, you have encrypted your authentication token!
+
+If you are using version control software, such as GitHub, this file can be committed and pushed (assuming it's within a project -- you probably don't want to commit your Desktop files).
+
+In order to use this encrypted token later on, you can simply call `decrypt_token()`, which accepts the service name, path to encrypted token file, and a logical 'complete', indicating whether the file should be returned as raw bytes or as a character string with the decoded (original) contents. 
+
+To use the encrypted token with the boxr package, I would use the `box_auth_service()` function to authenticate the service account token. It accepts either a path specifying a token file, such as the un-encoded one ("~/private/local/path/to/my/jwt/file.json"), or 'token_text', a character vector of the JWT. This is what we will use:
+
+```{r, eval = FALSE}
+
+boxr::box_auth_service(token_text = 
+                         decrypt_token(service = "BOXR",
+                                       path = "~/Desktop/.secret/BOXR", 
+                                       complete = TRUE)
+                       )
+```
+
+And that's it! Note that I've set `complete = TRUE` to ensure the decoded file is returned, and the path is now pointing to the .secret directory on my Desktop.
