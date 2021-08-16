@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://tokencodr.jdtrat.com/index.html</loc>
+  </url>
+  <url>
+    <loc>https://tokencodr.jdtrat.com/reference/create_env_pw.html</loc>
+  </url>
+  <url>
+    <loc>https://tokencodr.jdtrat.com/reference/decrypt_token.html</loc>
+  </url>
+  <url>
+    <loc>https://tokencodr.jdtrat.com/reference/encrypt_token.html</loc>
+  </url>
+  <url>
+    <loc>https://tokencodr.jdtrat.com/articles/tokencodr.html</loc>
+  </url>
+</urlset>
