@@ -2,9 +2,6 @@
 # https://github.com/r-box/boxr/blob/28ccd2610922b53e0275d4d128f29781b92970e0/R/boxr_auth.R#L580
 auth_message <- function(pw_info) {
 
-  function(pw_info) {
-
-    pw_info <- paste0(get_service_name("tokencodr"), "=", gen_password())
     cli::cli_div(theme = list(ul = list(`list-style-type` = crayon::red(cli::symbol$bullet),
                                         `margin-left` = -2)))
     cli::cli_ul("You may wish to add to your {.file .Renviron} file:")
@@ -18,7 +15,6 @@ auth_message <- function(pw_info) {
     cli::cli_text("  - Call {.code usethis::edit_r_environ()}.")
     cli::cli_text("  - Check that {.file .Renviron} ends with a new line.")
     cli::cli_end()
-  }
 
 }
 
